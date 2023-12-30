@@ -1,5 +1,5 @@
 import { getNormalizerWithBG } from "../colors/shared.js";
-import { colorizeWith24Bit } from "../colors/24bits.js";
+import { colorizeWith24Bit } from "../colors/24bit.js";
 import { colorizeWith8Bit } from "../colors/8bit.js";
 import { Color } from "../structures/color.js";
 

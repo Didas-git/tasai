@@ -1,5 +1,7 @@
 {
     "compilerOptions": {
+        "outDir": "dist",
+        "baseUrl": ".",
         "target": "ESNext",
         "module": "Node16",
         "moduleResolution": "Node16",
@@ -30,5 +32,8 @@
         "types": [
             "bun-types"
         ]
-    }
+    },
+    "include": [
+        "src/**/*"
+    ]
 }

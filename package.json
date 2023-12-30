@@ -1,6 +1,6 @@
 {
   "name": "tasai",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "The most complete and flexible ansi coloring library",
   "main": "./dist/index.js",
   "author": "DidaS",
@@ -9,8 +9,10 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js",
-      "default": "./dist/index.js"
+      "import": "./dist/index.js",
+      "default": "./dist/index.js",
+      "macro": "./dist/index.macro.js",
+      "require": null
     },
     "./package.json": "./package.json"
   },
@@ -23,8 +25,7 @@
   ],
   "scripts": {
     "check": "eslint \"src/**/*.ts\"",
-    "build": "rm -rf dist && tsc",
-    "test:macro": "bun build src/index.ts --outfile dist/build.js && bun dist/build.js"
+    "build": "rm -rf dist && tsc"
   },
   "repository": {
     "type": "git",
@@ -35,7 +36,12 @@
     "url": "https://github.com/Didas-git/tasai/issues"
   },
   "keywords": [
+    "tasai",
     "colors",
+    "ansi",
+    "console",
+    "terminal",
+    "colours",
     "bun",
     "bunjs"
   ],
