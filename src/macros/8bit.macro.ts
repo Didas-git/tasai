@@ -1,4 +1,6 @@
-import { colorizeWith8Bit, get8BitColorNormalizer } from "../colors/8bit.js";
+import { getNormalizerWithBG } from "../colors/shared.js";
+import { colorizeWith8Bit } from "../colors/8bit.js";
+
 import {
     ForegroundColorMap,
     BackgroundColorMap,
@@ -18,7 +20,7 @@ export function parseUsing8BitColors(string: string, isBackground: boolean = fal
     const afterColor = string.substring(closing + 1);
     if (!afterColor.length || afterColor === "<r>") return noColorPartBeginning;
 
-    if (color === "r") return `${noColorPartBeginning}${get8BitColorNormalizer(isBackground)}${parseUsing8BitColors(afterColor)}`;
+    if (color === "r") return `${noColorPartBeginning}${getNormalizerWithBG(isBackground)}${parseUsing8BitColors(afterColor)}`;
     if (color.startsWith("#")) throw new Error("Hex colors are not supported when using 8bit colors");
 
     if (color.startsWith("bg")) {
@@ -32,11 +34,9 @@ export function parseUsing8BitColors(string: string, isBackground: boolean = fal
 function colorize(string: string, colorCodeOrName: string, isBackground: boolean = false): string {
     const colorCode = parseInt(colorCodeOrName);
 
-    if (Number.isNaN(colorCode)) {
-        const code = isBackground ? BackgroundColorMap[colorCodeOrName] : ForegroundColorMap[colorCodeOrName];
-        if (typeof code === "undefined") throw new Error(`Unknown color '${colorCodeOrName}'`);
-        return colorizeWith4Bit(parseUsing8BitColors(string, isBackground), code);
-    }
+    if (!Number.isNaN(colorCode)) return colorizeWith8Bit(parseUsing8BitColors(string, isBackground), colorCode);
 
-    return colorizeWith8Bit(parseUsing8BitColors(string, isBackground), colorCode);
+    const code = isBackground ? BackgroundColorMap[colorCodeOrName] : ForegroundColorMap[colorCodeOrName];
+    if (typeof code === "undefined") throw new Error(`Unknown color '${colorCodeOrName}'`);
+    return colorizeWith4Bit(parseUsing8BitColors(string, isBackground), code);
 }
