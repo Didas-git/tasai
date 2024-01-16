@@ -7,14 +7,14 @@ export const ForegroundColorMap: Record<string, number> = {
     magenta: 35,
     cyan: 36,
     white: 37,
-    bright_black: 90,
-    bright_red: 91,
-    bright_green: 92,
-    bright_yellow: 93,
-    bright_blue: 94,
-    bright_magenta: 95,
-    bright_cyan: 96,
-    bright_white: 97
+    brightBlack: 90,
+    brightRed: 91,
+    brightGreen: 92,
+    brightYellow: 93,
+    brightBlue: 94,
+    brightMagenta: 95,
+    brightCyan: 96,
+    brightWhite: 97
 };
 
 export const BackgroundColorMap: Record<string, number> = {
@@ -26,14 +26,14 @@ export const BackgroundColorMap: Record<string, number> = {
     magenta: 45,
     cyan: 46,
     white: 47,
-    bright_black: 100,
-    bright_red: 101,
-    bright_green: 102,
-    bright_yellow: 103,
-    bright_blue: 104,
-    bright_magenta: 105,
-    bright_cyan: 106,
-    bright_white: 107
+    brightBlack: 100,
+    brightRed: 101,
+    brightGreen: 102,
+    brightYellow: 103,
+    brightBlue: 104,
+    brightMagenta: 105,
+    brightCyan: 106,
+    brightWhite: 107
 };
 
 function isBackgroundColor(code: number): boolean {

@@ -270,25 +270,25 @@ function getCastingFunctions(space: ColorSpace): CastingFunctions {
 
 /** collects the appropriate interpolation functions for a given interpolation method */
 function getInterpolationFunctions(interpolation: Interpolation, longRoute = false): InterpolationFunctions {
-    let interpFtn: InterpolationFunction;
-    let cyclicInterpFtn: CyclicInterpolationFunction;
+    let interpolationFunction: InterpolationFunction;
+    let cyclicInterpolationFunction: CyclicInterpolationFunction;
 
     switch (interpolation) {
         case Interpolation.LINEAR:
-            interpFtn = ExtendedMath.lerp;
-            cyclicInterpFtn = longRoute ? ExtendedMath.cyclicLerpLong : ExtendedMath.cyclicLerpShort;
+            interpolationFunction = ExtendedMath.lerp;
+            cyclicInterpolationFunction = longRoute ? ExtendedMath.cyclicLerpLong : ExtendedMath.cyclicLerpShort;
             break;
         case Interpolation.INCREMENTAL_QUADRATIC:
-            interpFtn = ExtendedMath.qerp0;
-            cyclicInterpFtn = longRoute ? ExtendedMath.cyclicQerp0Long : ExtendedMath.cyclicQerp0Short;
+            interpolationFunction = ExtendedMath.qerp0;
+            cyclicInterpolationFunction = longRoute ? ExtendedMath.cyclicQerp0Long : ExtendedMath.cyclicQerp0Short;
             break;
         case Interpolation.DECREMENTAL_QUADRATIC:
-            interpFtn = ExtendedMath.qerp1;
-            cyclicInterpFtn = longRoute ? ExtendedMath.cyclicQerp1Long : ExtendedMath.cyclicQerp1Short;
+            interpolationFunction = ExtendedMath.qerp1;
+            cyclicInterpolationFunction = longRoute ? ExtendedMath.cyclicQerp1Long : ExtendedMath.cyclicQerp1Short;
             break;
         case Interpolation.CUBIC:
-            interpFtn = ExtendedMath.cubicInterpDeriv;
-            cyclicInterpFtn = longRoute
+            interpolationFunction = ExtendedMath.cubicInterpDeriv;
+            cyclicInterpolationFunction = longRoute
                 ? (t, a, b, cycles) => ExtendedMath.cyclicCubicInterpDerivLong(t, a, b, 0, 0, cycles)
                 : (t, a, b, cycles) => ExtendedMath.cyclicCubicInterpDerivShort(t, a, b, 0, 0, cycles);
             break;
@@ -296,7 +296,7 @@ function getInterpolationFunctions(interpolation: Interpolation, longRoute = fal
             throw new Error("That interpolation method is not yet supported within this function");
     }
 
-    return { interpolationFunction: interpFtn, cyclicInterpolationFunction: cyclicInterpFtn };
+    return { interpolationFunction, cyclicInterpolationFunction };
 }
 
 /** returns a number which indicates which components of a given color system are cyclical */
