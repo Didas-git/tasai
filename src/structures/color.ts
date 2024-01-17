@@ -3,7 +3,7 @@
 // The majority of this code was taken from colours.js (ISC License)
 // https://github.com/ChasJC23/colours.js/blob/a715fd35721413acdca8d0eed1607c7ac3deb33e/src/Color.ts
 
-import { ExtendedMath } from "../math.js";
+import { ExtendedMath } from "./math.js";
 
 export enum ColorSpace {
     RGB,
