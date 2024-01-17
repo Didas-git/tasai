@@ -1,6 +1,6 @@
 import { getNormalizerWithBG } from "./shared.js";
 
-function isValid8BitColor(code: number): boolean {
+export function isValid8BitColor(code: number): boolean {
     return !Number.isNaN(code) && code >= 0 && code <= 255;
 }
 

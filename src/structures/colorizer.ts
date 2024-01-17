@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/unbound-method */
 
+import { Color } from "./color.js";
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
 export interface Colorizer {
     // eslint-disable-next-line @typescript-eslint/prefer-function-type
-    (string: string): string;
+    (...text: Array<string>): string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-declaration-merging
@@ -11,17 +13,18 @@ export class Colorizer {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static readonly RESET = "\x1B[0m";
 
-    protected colorize(open: number, close: number): Colorizer {
-        function style(this: { stack?: Array<Array<number>> }, input: string): string {
-            if (input.includes(close.toString())) input = input.replace(new RegExp(`\\u001b\\[${close}m`, "g"), `\x1B[${close}m\x1B[${open}m`);
-            if (typeof this.stack === "undefined") return `\x1B[${open}m${input}\x1B[${close}m`;
+    protected colorize(open: number | string, close: number): Colorizer {
+        function style(this: { stack?: Array<Array<number | string>> }, ...input: Array<string>): string {
+            let text = input.join("");
+            if (text.includes(close.toString())) text = text.replace(new RegExp(`\\u001b\\[${close}m`, "g"), `\x1B[${close}m\x1B[${open}m`);
+            if (typeof this.stack === "undefined") return `\x1B[${open}m${text}\x1B[${close}m`;
 
             let openStack = "";
             let closeStack = "";
             for (let i = 0, { length } = this.stack; i < length; i++) {
                 const [o, c] = this.stack[i];
 
-                if (input.includes(c.toString())) input = input.replace(new RegExp(`\\x1B\\[${c}m`, "g"), `\x1B[${c}m\x1B[${o}m`);
+                if (text.includes(c.toString())) text = text.replace(new RegExp(`\\x1B\\[${c}m`, "g"), `\x1B[${c}m\x1B[${o}m`);
 
                 openStack += `\x1B[${o}m`;
                 closeStack += `\x1B[${c}m`;
@@ -29,7 +32,7 @@ export class Colorizer {
 
             openStack += `\x1B[${open}m`;
             closeStack += `\x1B[${close}m`;
-            return `${openStack}${input}${closeStack}`;
+            return `${openStack}${text}${closeStack}`;
         }
 
         Object.setPrototypeOf(style, this);
@@ -39,6 +42,16 @@ export class Colorizer {
         else style.stack.push([open, close]);
 
         return style as never;
+    }
+
+    public rgb(r: number, g: number, b: number, bg: boolean = false): Colorizer {
+        const color = Color.from24BitRGB(r, g, b);
+        return this.colorize(`${bg ? 48 : 38};2;${color.red8Bit};${color.green8Bit};${color.blue8Bit}`, bg ? 49 : 39);
+    }
+
+    public hex(hex: string, bg: boolean = false): Colorizer {
+        const color = Color.fromHex(hex);
+        return this.colorize(`${bg ? 48 : 38};2;${color.red8Bit};${color.green8Bit};${color.blue8Bit}`, bg ? 49 : 39);
     }
 
     //#region Foreground
@@ -58,7 +71,6 @@ export class Colorizer {
     public get brightMagenta(): Colorizer { return this.colorize(95, 39); }
     public get brightCyan(): Colorizer { return this.colorize(96, 39); }
     public get brightWhite(): Colorizer { return this.colorize(97, 39); }
-
     //#endregion Foreground
     //#region Background
     public get bgBlack(): Colorizer { return this.colorize(40, 49); }
