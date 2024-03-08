@@ -5,7 +5,9 @@ import {
     colorizeWith4Bit
 } from "../colors/4bit.js";
 
-export function parseUsing4BitColors(string: string, currentColor?: number): string {
+import { deprecate } from "node:util";
+
+export const parseUsing4BitColors = deprecate(function (string: string, currentColor?: number): string {
     const opening = string.indexOf("<");
     if (opening === -1) return string;
 
@@ -30,4 +32,4 @@ export function parseUsing4BitColors(string: string, currentColor?: number): str
     const code = ForegroundColorMap[color];
     if (typeof code === "undefined") throw new Error(`Unknown color '${color}'`);
     return `${noColorPartBeginning}${colorizeWith4Bit(parseUsing4BitColors(afterColor, code), code)}`;
-}
+}, "parseUsing8BitColors() is deprecated. Use parse() instead. Optionally passing 'COLOR_SPACE=8bit' as an env var.");

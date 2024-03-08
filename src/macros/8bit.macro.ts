@@ -7,7 +7,9 @@ import {
     colorizeWith4Bit
 } from "../colors/4bit.js";
 
-export function parseUsing8BitColors(string: string, isBackground: boolean = false): string {
+import { deprecate } from "node:util";
+
+export const parseUsing8BitColors = deprecate(function (string: string, isBackground: boolean = false): string {
     const opening = string.indexOf("<");
     if (opening === -1) return string;
 
@@ -29,7 +31,7 @@ export function parseUsing8BitColors(string: string, isBackground: boolean = fal
     }
 
     return `${noColorPartBeginning}${colorize(afterColor, color)}`;
-}
+}, "parseUsing8BitColors() is deprecated. Use parse() instead. Optionally passing 'COLOR_SPACE=8bit' as an env var.");
 
 function colorize(string: string, colorCodeOrName: string, isBackground: boolean = false): string {
     const colorCode = parseInt(colorCodeOrName);

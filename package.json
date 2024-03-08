@@ -1,6 +1,6 @@
 {
   "name": "tasai",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "The most complete and flexible ansi coloring library",
   "main": "./dist/index.js",
   "author": "DidaS",

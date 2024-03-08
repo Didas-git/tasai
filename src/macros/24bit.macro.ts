@@ -9,7 +9,9 @@ import {
     colorizeWith4Bit
 } from "../colors/4bit.js";
 
-export function parseUsing24BitColors(string: string, isBackground: boolean = false): string {
+import { deprecate } from "node:util";
+
+export const parseUsing24BitColors = deprecate(function (string: string, isBackground: boolean = false): string {
     const opening = string.indexOf("<");
     if (opening === -1) return string;
 
@@ -30,7 +32,7 @@ export function parseUsing24BitColors(string: string, isBackground: boolean = fa
     }
 
     return `${noColorPartBeginning}${colorize(afterColor, color)}`;
-}
+}, "parseUsing24BitColors() is deprecated. Use parse() instead.");
 
 const ColorSpaceMap: Record<string, string> = {
     RGB: "from24BitRGB",
